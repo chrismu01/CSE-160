@@ -1,0 +1,71 @@
+<!-- asg0.html-->
+<!-- Christian Mu-->
+<!-- cmu15@ucsc.edu-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Draw a Vector</title>
+    </head>
+    <body onload="main()">
+
+        <!-- Canvas Section-->
+        <p>
+        <canvas id="example" width="400" height="400">
+        Please use a browser that supports "canvas"
+        </canvas>
+        </p>
+
+        <!-- Load the Scripts-->
+        <script src="asg0.js"></script>
+        <script src="lib/cuon-matrix-cse160.js"></script>
+
+        <!-- First row of accepting inputs-->
+        <p>
+            <!-- Store x1 value-->
+            <label for="x-cord">v1: x</label>
+            <input type="number" id="x-cord" value="0"/> 
+            
+            <!-- Store y1 value-->
+            <label for="y-cord">y</label>
+            <input type="number" id="y-cord" value="5"/>
+        </p>
+
+        <!-- Second row of accept inputs-->
+        <p>
+            <!-- Store x2 value-->
+            <label for="x-cord1">v1: x</label>
+            <input type="number" id="x-cord1" value="5"/> 
+
+            <!-- Store y2 value-->
+            <label for="y-cord1">y</label>
+            <input type="number" id="y-cord1" value="0"/>
+        </p>
+
+        <!-- First draw button-->
+        <p><input type="button" id="draw1" value="Draw" /></p>
+
+        <!-- Fourth row with 1 drop down and input box-->
+        <p>
+        <label for="operation">Operation:</label>
+        <select name="mathops" id="operation">
+            <option value="add">Add</option>
+            <option value="sub">Subtract</option>
+            <option value="mul">Multiply</option>
+            <option value="div">Divide</option>
+            <option value="ang">Angle Between</option>
+            <option value="are">Area</option>
+            <option value="mag">Magnitude</option>
+            <option value="nor">Normalize</option>
+        </select>
+
+        <label for="scalar">Scaler:</label>
+        <input type="number" id="scalar" />
+        </p>
+
+        <!-- Second draw button-->
+        <p><input type="button" id="draw2" value="Draw" /></p>
+        <br>
+    </body>
+</html>
