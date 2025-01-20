@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Change a point color</title>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+    Please use a browser that supports "canvas"
+    </canvas>
+
+    <!-- Load the scripts-->
+    <script src="../lib/webgl-utils.js"></script>
+    <script src="../lib/webgl-debug.js"></script>
+    <script src="../lib/cuon-utils.js"></script>
+    <script src="ColoredPoints.js"></script>
+    <script src="Points.js"></script>
+    <script src="Triangle.js"></script>
+    <script src="Circle.js"></script>
+    
+    <!-- Data-->
+    <p id="numdot"> XXX </p>
+
+    <!-- First row: Clear canvas button-->
+    <p>
+      <button type="button" id="eraseButton">Eraser: Off</button>
+      <button type="button" id="clearButton">Clear Canvas</button>
+      <button type="button" id="drawpicButton">Draw Picture</button>
+    </p>
+
+    <p>
+      <button type="button" id="pointButton">Point</button>
+      <button type="button" id="triButton">Triangle</button>
+      <button type="button" id="circleButton">Circle</button>
+    </p>
+
+    <!-- Sliders for colors-->
+    <p>
+      Red <input type="range" id="redSlide" value="0" min="0" max="100" class="slider" />
+      Green <input type="range" id="greenSlide" value="0" min="0" max="100" class="slider" />
+      Blue <input type="range" id="blueSlide" value="0" min="0" max="100" class="slider" />
+    </p>
+
+    <p>
+      Shape Size <input type="range" id="sizeSlide" value="5" min="5" max="40" class="slider"/>
+      SegCount <input type="range" id="segSlide" min="0" max="20" />
+  </p>
+  </body>
+</html>
