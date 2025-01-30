@@ -30,12 +30,12 @@ function setupWebGL(){ //No need to change
     canvas = document.getElementById('webgl');
 
     // Get the rendering context for WebGL
-    //gl = getWebGLContext(canvas);
     gl = canvas.getContext("webgl", {preserveDrawingBuffer: true})
     if (!gl) {
         console.log('Failed to get the rendering context for WebGL');
         return;
     }
+    gl.enable(gl.DEPTH_TEST);
 }
 
 function connectVariablesToGLSL(){
@@ -81,11 +81,20 @@ function connectVariablesToGLSL(){
 //UI global variables
 let g_selectedColor = [1.0,1.0,1.0,1.0];
 let g_globalAngle = 0;
+let g_animation = false;
+let g_tailAngle = 0;
+let g_legAngle = 0;
 
 function addActions() {
     // Angle slider
-    document.getElementById('angleSlide').addEventListener('mousemove', function() { console.log("slider"); g_globalAngle = this.valueAsNumber; renderAllShapes(); console.log(g_globalAngle); });
-
+    document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderAllShapes(); });
+    document.getElementById('tailSlide').addEventListener('mousemove', function() {g_tailAngle = this.value; renderAllShapes(); });
+    document.getElementById('legSlide').addEventListener('mousemove', function() {g_legAngle = this.value; renderAllShapes(); });
+    document.getElementById('nineButton').onclick = function() {g_globalAngle = 90; renderAllShapes(); };
+    document.getElementById('fourButton').onclick = function() {g_globalAngle = 45; renderAllShapes(); };
+    document.getElementById('fourButton').onclick = function() {g_globalAngle = 270; renderAllShapes(); };
+    document.getElementById('animateOnButton').onclick = function() {g_animation = true};
+    document.getElementById('animateOffButton').onclick = function() {g_animation = false};
 }
 
 function main() {
@@ -102,12 +111,27 @@ function main() {
     canvas.onmousemove = function(ev) {if(ev.buttons == 1) {click(ev)}};
 
     // Specify the color for clearing <canvas>
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    //gl.clearColor(0, 0, 0, 1.0);
+    gl.clearColor(0.53, 0.81, 0.98, 1.0);
 
-    renderAllShapes();
+    //renderAllShapes();
+    requestAnimationFrame(tick);
 }
 
 
+var g_startTime = performance.now()/1000.0;
+var g_seconds = performance.now()/1000.0 - g_startTime;
+function tick() {
+    // print some debug infomration so we know we are running
+    g_seconds = performance.now()/1000.0 - g_startTime;
+    console.log(performance.now);
+
+    //draw everything
+    renderAllShapes();
+
+    //tell the browser to update again when it has time
+    requestAnimationFrame(tick);
+}
 
 var g_shapesList = [];
 
@@ -148,33 +172,24 @@ function convertCoordEventGL(ev) {
 
 // Draw every shape that is supossed to be in the canvas
 function renderAllShapes() {
-
-    //var startTime = performance.now();
+    var startTime = performance.now();
     console.log(g_globalAngle);
+    
     var globalRotMat = new Matrix4().rotate(g_globalAngle,0,1,0);
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    var body = new Cube();
-    body.color = [1.0,0.0,0.0,1.0];
-    body.matrix.translate(-.25, -.5, 0.0);
-    body.matrix.scale(0.5, 1, .5);
-    body.render();
+    drawGirrafe();
 
-    var leg = new Cube();
-    leg.color = [1.0,1.0,0.0,1.0];
-    leg.matrix.translate(.7, 0, 0.0);
-    leg.matrix.rotate(45,0,0,1);
-    leg.matrix.scale(0.25, .7, .5);
-    leg.render();
+    
 
     // Check the time at the end of the function, and show on web page
     //var duration = performance.now() - startTime;
-    //sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(1000/duration));
+    sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000 / duration) / 10, "numdot");
 }
 
-/*
+
 // Set the text of a HTML element
 function sendTextToHTML(text, htmlID) {
     var htmlElm = document.getElementById(htmlID);
@@ -184,4 +199,4 @@ function sendTextToHTML(text, htmlID) {
     }
     htmlElm.innerHTML = text;
 }
-*/
+
