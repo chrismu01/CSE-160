@@ -82,17 +82,27 @@ function connectVariablesToGLSL(){
 let g_selectedColor = [1.0,1.0,1.0,1.0];
 let g_globalAngle = 0;
 let g_animation = false;
-let g_tailAngle = 0;
+let g_tailAngle1 = 0;
+let g_tailAngle2 = 0;
+let g_tailAngleW = 0;
 let g_legAngle = 0;
+let g_neckAngle = 0;
+let g_headAngle = 0;
+
 
 function addActions() {
     // Angle slider
-    document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderAllShapes(); });
-    document.getElementById('tailSlide').addEventListener('mousemove', function() {g_tailAngle = this.value; renderAllShapes(); });
-    document.getElementById('legSlide').addEventListener('mousemove', function() {g_legAngle = this.value; renderAllShapes(); });
-    document.getElementById('nineButton').onclick = function() {g_globalAngle = 90; renderAllShapes(); };
-    document.getElementById('fourButton').onclick = function() {g_globalAngle = 45; renderAllShapes(); };
-    document.getElementById('fourButton').onclick = function() {g_globalAngle = 270; renderAllShapes(); };
+    document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderScene(); });
+    
+    document.getElementById('tail1Slide').addEventListener('mousemove', function() {g_tailAngle1 = this.value; renderScene(); });
+    document.getElementById('tail2Slide').addEventListener('mousemove', function() {g_tailAngle2 = this.value; renderScene(); });
+    
+    document.getElementById('legSlide').addEventListener('mousemove', function() {g_legAngle = this.value; renderScene(); });
+    document.getElementById('headSlide').addEventListener('mousemove', function() {g_headAngle = this.value; renderScene(); });
+    document.getElementById('backButton').onclick = function() {g_globalAngle = 90; renderScene(); };
+    document.getElementById('frontButton').onclick = function() {g_globalAngle = 270; renderScene(); };
+    document.getElementById('leftButton').onclick = function() {g_globalAngle = 0; renderScene(); };
+    document.getElementById('rightButton').onclick = function() {g_globalAngle = 180; renderScene(); };
     document.getElementById('animateOnButton').onclick = function() {g_animation = true};
     document.getElementById('animateOffButton').onclick = function() {g_animation = false};
 }
@@ -114,7 +124,7 @@ function main() {
     //gl.clearColor(0, 0, 0, 1.0);
     gl.clearColor(0.53, 0.81, 0.98, 1.0);
 
-    //renderAllShapes();
+    //renderScene();
     requestAnimationFrame(tick);
 }
 
@@ -127,12 +137,21 @@ function tick() {
     console.log(performance.now);
 
     //draw everything
-    renderAllShapes();
-
+    renderScene();
+    updateAngles();
     //tell the browser to update again when it has time
     requestAnimationFrame(tick);
 }
 
+function updateAngles() {
+    if (g_animation) {
+        g_tailAngle1 = (45*Math.sin(g_seconds));
+        g_tailAngle2 = (45*Math.sin(g_seconds));
+        g_legAngle = (45*Math.sin(g_seconds));
+        g_headAngle = (90*Math.sin(g_seconds));
+
+    }
+}
 var g_shapesList = [];
 
 /*
@@ -155,7 +174,7 @@ function click(ev) {
     g_shapesList.push(point);
 
     // Draw every shape that is supossed to be in the canvas
-    renderAllShapes();
+    renderScene();
 }
 */
 function convertCoordEventGL(ev) {
@@ -171,7 +190,7 @@ function convertCoordEventGL(ev) {
 }
 
 // Draw every shape that is supossed to be in the canvas
-function renderAllShapes() {
+function renderScene() {
     var startTime = performance.now();
     console.log(g_globalAngle);
     
@@ -182,10 +201,8 @@ function renderAllShapes() {
 
     drawGirrafe();
 
-    
-
     // Check the time at the end of the function, and show on web page
-    //var duration = performance.now() - startTime;
+    var duration = performance.now() - startTime;
     sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000 / duration) / 10, "numdot");
 }
 
