@@ -165,7 +165,7 @@ function initTextures() {
     // Register the event handler to be called when image loading is completed
     image.onload = function(){ sendTextureToTEXTURE0(image); };
     // Tell the browser to load an Image
-    image.src = '../lib/sky.jpg';
+    image.src = '../lib/corn.jpg';
   
     return true;
 }
@@ -245,7 +245,7 @@ function updateAngles() {
 }
 
 const movement_speed = 0.1;
-const rotation_speed = 0.02
+const rotation_speed = 0.05
 var g_eye = [0,0,3];
 var g_at = [0,0,-100];
 var g_up = [0,1,0];
@@ -320,32 +320,42 @@ function keydown(ev) {
 
 
 var g_map = [
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 1, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 1, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1],
-]
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+    [3, 0, 0, 1, 0, 2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 2, 0, 0, 0, 3],
+    [3, 0, 2, 2, 0, 2, 2, 0, 1, 0, 3, 2, 0, 1, 3, 0, 1, 2, 3, 0, 2, 1, 0, 3, 2, 0, 2, 2, 0, 2, 0, 3],
+    [3, 0, 2, 0, 0, 0, 3, 0, 1, 0, 2, 0, 0, 1, 2, 0, 1, 0, 3, 0, 2, 1, 0, 2, 3, 0, 0, 0, 0, 2, 0, 3],
+    [3, 0, 0, 0, 3, 0, 3, 0, 1, 0, 0, 0, 3, 1, 2, 0, 1, 0, 0, 0, 0, 1, 0, 2, 2, 0, 3, 0, 3, 0, 0, 3],
+    [3, 0, 2, 3, 2, 0, 2, 2, 1, 2, 3, 0, 2, 1, 3, 0, 1, 0, 2, 2, 0, 1, 0, 3, 3, 0, 2, 2, 2, 0, 2, 3],
+    [3, 0, 2, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 1, 2, 0, 1, 0, 2, 0, 0, 1, 0, 2, 3, 0, 2, 0, 0, 0, 2, 3],
+    [3, 0, 3, 0, 3, 3, 3, 0, 1, 0, 3, 3, 3, 1, 3, 0, 1, 0, 3, 3, 3, 1, 0, 3, 3, 0, 3, 3, 3, 0, 3, 3],
+    [3, 0, 3, 0, 0, 0, 3, 0, 1, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 0, 3, 1, 0, 0, 3, 0, 0, 0, 3, 0, 3, 3],
+    [3, 0, 3, 3, 3, 0, 3, 0, 1, 3, 3, 0, 3, 1, 3, 0, 1, 3, 3, 0, 3, 1, 3, 0, 3, 0, 3, 3, 3, 0, 3, 3],
+    [3, 0, 2, 2, 3, 0, 3, 0, 1, 3, 2, 0, 3, 1, 3, 0, 1, 3, 2, 0, 3, 1, 3, 0, 3, 0, 3, 2, 2, 0, 3, 3],
+    [3, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 3, 1, 0, 0, 1, 0, 0, 0, 3, 1, 0, 0, 3, 0, 0, 0, 3, 0, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+];
+
 
 function drawMap() {
-    var map = new Cube();
-    for (x=0;x<32;x++) {
-        for (y=0;y<32;y++) {
-            if(x<1 || x==31 || y==0 || y==31) {
-            //if (g_map[x][y]==1) {
-                // var map = new Cube();
-                map.color = [1.0,1.0,1.0,1.0];
-                map.matrix.translate(x-4, -.75, y-4);
-                map.matrix.scale(.4,.4,.4);
-                map.matrix.translate(x-16, 0, y-16);
-                map.renderfaster();
+    for (let x = 0; x < g_map.length; x++) {
+        for (let y = 0; y < g_map[x].length; y++) {
+            let height = g_map[x][y]; // Get the height from the array
+            if (height > 0) { // Only draw walls
+                for (let h = 0; h < height; h++) { // Stack cubes based on height
+                    let cube = new Cube();
+                    cube.color = [0.0, 0.0, 1.0, 1.0]; // White walls
+                    cube.textureNum = 0;
+                    // Position the cube correctly in the world
+                    cube.matrix.translate(x - (g_map.length / 2), h - 0.75, y - (g_map[x].length / 2));
+                    // cube.matrix.scale(0.4, 0.4, 0.4);
+                    
+                    cube.renderfaster();
+                }
             }
         }
     }
 }
+
 
 // Draw every shape that is supossed to be in the canvas
 function renderScene() {
@@ -370,21 +380,21 @@ function renderScene() {
     drawMap();
 
     //draw the floor
-    var body = new Cube();
-    body.color = [1.0, 0.0, 0.0, 1.0];
-    body.textureNum=0;
-    body.matrix.translate(0, -0.75, 0.0);
-    body.matrix.scale(10,0,10);
-    body.matrix.translate(-.5,0,-0.5);
-    body.render();
+    var floor = new Cube();
+    floor.color = [1.0, 0.0, 0.0, 1.0];
+    floor.textureNum=0;
+    floor.matrix.translate(0, -0.75, 0.0);
+    floor.matrix.scale(32,0,32);
+    floor.matrix.translate(-.5,0,-0.5);
+    floor.renderfaster();
 
     //Draw the sky
     var sky = new Cube();
     sky.color = [0.53, 0.81, 0.98, 1.0];
     sky.textureNum=-2;
-    sky.matrix.scale(50,50,50);
+    sky.matrix.scale(100,100,100);
     sky.matrix.translate(-.5, -.5, -0.5);
-    sky.render();
+    sky.renderfaster();
 
 
     // Check the time at the end of the function, and show on web page

@@ -31,31 +31,32 @@ class Cube{
             ,
             0,0,1, 0,1,1, 1,1,1
         ]);
-        this.cubeVerts= [
-            0,0,0, 1,1,0, 1,0,0
+        
+        this.uvVerts= new Float32Array([
+            1,0, 0,1, 1,1
             ,
-            0,0,0, 0,1,0, 1,1,0
+            0,0, 0,1, 1,1
             ,
-            0,1,0, 0,1,1, 1,1,1
+            1,0, 0,1, 1,1
             ,
-            0,1,0, 1,1,1, 1,1,0
+            0,0, 0,1, 1,1
             ,
-            1,1,0, 1,1,1, 1,0,0
+            1, 0, 0, 1, 1, 1
             ,
-            1,0,0, 1,1,1, 1,0,1
+            0, 0, 0, 1, 1, 1
             ,
-            0,1,0, 0,1,1, 0,0,0
+            1, 0, 0, 1, 1, 1
             ,
-            0,0,0, 0,1,1, 0,0,1
+            0, 0, 0, 1, 1, 1
             ,
-            0,0,0, 0,0,1, 1,0,1
+            1, 0, 0, 1, 1, 1
             ,
-            0,0,0, 1,0,1, 1,0,0
+            0, 0, 0, 1, 1, 1
             ,
-            0,0,1, 1,1,1, 1,0,1
+            1, 0, 0, 1, 1, 1
             ,
-            0,0,1, 0,1,1, 1,1,1
-        ];
+            0, 0, 0, 1, 1, 1
+        ]);
     }
     render() {
         var rgba = this.color;
@@ -136,7 +137,7 @@ class Cube{
     renderfaster() {
         var rgba = this.color;
 
-        gl.uniform1i(u_whichTexture, -2);
+        gl.uniform1i(u_whichTexture, this.textureNum);
 
         gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
 
@@ -145,12 +146,35 @@ class Cube{
         if (g_vertexBuffer==null) {
             initTriange3D();
         }
+        gl.bindBuffer(gl.ARRAY_BUFFER, g_vertexBuffer);
+
         // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.cubeVerts), gl.DYNAMIC_DRAW)
         gl.bufferData(gl.ARRAY_BUFFER, this.cubeVerts32, gl.DYNAMIC_DRAW)
+
+        if (g_uvBuffer==null) {
+            initUV();
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, g_uvBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, this.uvVerts, gl.DYNAMIC_DRAW);
 
         gl.drawArrays(gl.TRIANGLES, 0, 36);
 
     
     }
+}
+var g_uvBuffer=null;
+function initUV() {
+    g_uvBuffer = gl.createBuffer();
+    if (!g_uvBuffer) {
+      console.log('Failed to create the buffer object');
+      return -1;
+    }
+  
+    // Bind the buffer object to target
+    gl.bindBuffer(gl.ARRAY_BUFFER, g_uvBuffer);
+
+    gl.vertexAttribPointer(a_UV, 2, gl.FLOAT, false, 0, 0);
+
+    gl.enableVertexAttribArray(a_UV);
 }
 
