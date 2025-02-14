@@ -244,7 +244,8 @@ function updateAngles() {
     }
 }
 
-const movement_speed = 0.2;
+const movement_speed = 0.1;
+const rotation_speed = 0.02
 var g_eye = [0,0,3];
 var g_at = [0,0,-100];
 var g_up = [0,1,0];
@@ -287,11 +288,36 @@ function keydown(ev) {
         g_eye[2] -= rightNormalized[2] * movement_speed;
         g_at[0] -= rightNormalized[0] * movement_speed;
         g_at[2] -= rightNormalized[2] * movement_speed;
+    } else if (key == 81) { // Q - Turn left 
+        const angle = rotation_speed;
+        const cosTheta = Math.cos(angle);
+        const sinTheta = Math.sin(angle);
+
+        // Rotate the forward vector around the Y-axis
+        const newForwardX = forward[0] * cosTheta + forward[2] * sinTheta;
+        const newForwardZ = -forward[0] * sinTheta + forward[2] * cosTheta;
+
+        // Update the look-at point
+        g_at[0] = g_eye[0] + newForwardX;
+        g_at[2] = g_eye[2] + newForwardZ;
+    } else if (key == 69) { // E - Turn right 
+        const angle = -rotation_speed; 
+        const cosTheta = Math.cos(angle);
+        const sinTheta = Math.sin(angle);
+
+        // Rotate the forward vector around the Y-axis
+        const newForwardX = forward[0] * cosTheta + forward[2] * sinTheta;
+        const newForwardZ = -forward[0] * sinTheta + forward[2] * cosTheta;
+
+        // Update the look-at point
+        g_at[0] = g_eye[0] + newForwardX;
+        g_at[2] = g_eye[2] + newForwardZ;
     }
 
     // Redraw the scene
     renderScene();
 }
+
 
 var g_map = [
     [1, 1, 1, 1, 1, 1, 1, 1],
