@@ -26,7 +26,7 @@ var FSHADER_SOURCE = `
             gl_FragColor = u_FragColor;
 
         } else if (u_whichTexture == -1) {
-            gl_FragColor = vec4(u_UV,1.0,1.0);
+            gl_FragColor = vec4(v_UV,1.0,1.0);
 
         } else if (u_whichTexture == 0) {
             gl_FragColor = texture2D(u_Sampler0, v_UV);
@@ -130,6 +130,8 @@ function connectVariablesToGLSL(){
 
     var identityM = new Matrix4();
     gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
+    gl.uniformMatrix4fv(u_ViewMatrix, false, identityM.elements);
+    gl.uniformMatrix4fv(u_ProjectionMatrix, false, identityM.elements);
 }
 
 // Constants
