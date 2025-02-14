@@ -152,18 +152,7 @@ let g_headAngle = 0;
 function addActions() {
     // Angle slider
     document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderScene(); });
-    
-    document.getElementById('tail1Slide').addEventListener('mousemove', function() {g_tailAngle1 = this.value; renderScene(); });
-    document.getElementById('tail2Slide').addEventListener('mousemove', function() {g_tailAngle2 = this.value; renderScene(); });
-    
-    document.getElementById('legSlide').addEventListener('mousemove', function() {g_legAngle = this.value; renderScene(); });
-    document.getElementById('headSlide').addEventListener('mousemove', function() {g_headAngle = this.value; renderScene(); });
-    document.getElementById('backButton').onclick = function() {g_globalAngle = 90; renderScene(); };
-    document.getElementById('frontButton').onclick = function() {g_globalAngle = 270; renderScene(); };
-    document.getElementById('leftButton').onclick = function() {g_globalAngle = 0; renderScene(); };
-    document.getElementById('rightButton').onclick = function() {g_globalAngle = 180; renderScene(); };
-    document.getElementById('animateOnButton').onclick = function() {g_animation = true};
-    document.getElementById('animateOffButton').onclick = function() {g_animation = false};
+
 }
 
 function initTextures() {
@@ -256,6 +245,9 @@ function updateAngles() {
 }
 
 const movement_speed = 0.2;
+var g_eye = [0,0,3];
+var g_at = [0,0,-100];
+var g_up = [0,1,0];
 
 function keydown(ev) {
     const key = ev.keyCode;
@@ -301,11 +293,33 @@ function keydown(ev) {
     renderScene();
 }
 
+var g_map = [
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 1, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1],
+]
 
-
-var g_eye = [0,0,3];
-var g_at = [0,0,-100];
-var g_up = [0,1,0];
+function drawMap() {
+    var map = new Cube();
+    for (x=0;x<32;x++) {
+        for (y=0;y<32;y++) {
+            if(x<1 || x==31 || y==0 || y==31) {
+            //if (g_map[x][y]==1) {
+                // var map = new Cube();
+                map.color = [1.0,1.0,1.0,1.0];
+                map.matrix.translate(x-4, -.75, y-4);
+                map.matrix.scale(.4,.4,.4);
+                map.matrix.translate(x-16, 0, y-16);
+                map.renderfaster();
+            }
+        }
+    }
+}
 
 // Draw every shape that is supossed to be in the canvas
 function renderScene() {
@@ -327,7 +341,7 @@ function renderScene() {
     gl.uniformMatrix4fv(u_GlobalRotateMatrix, false, globalRotMat.elements);
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
+    drawMap();
     //draw the floor
     var body = new Cube();
     body.color = [1.0, 0.0, 0.0, 1.0];
@@ -344,7 +358,6 @@ function renderScene() {
     sky.matrix.translate(-.5, -.5, -0.5);
     sky.render();
 
-    drawGirrafe();
 
     // Check the time at the end of the function, and show on web page
     var duration = performance.now() - startTime;
