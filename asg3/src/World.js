@@ -368,6 +368,7 @@ function renderScene() {
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     drawMap();
+
     //draw the floor
     var body = new Cube();
     body.color = [1.0, 0.0, 0.0, 1.0];
@@ -377,9 +378,10 @@ function renderScene() {
     body.matrix.translate(-.5,0,-0.5);
     body.render();
 
+    //Draw the sky
     var sky = new Cube();
-    sky.color = [1.0,0.0,0.0,1.0];
-    sky.textureNum=1;
+    sky.color = [0.53, 0.81, 0.98, 1.0];
+    sky.textureNum=-2;
     sky.matrix.scale(50,50,50);
     sky.matrix.translate(-.5, -.5, -0.5);
     sky.render();
