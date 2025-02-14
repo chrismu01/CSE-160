@@ -286,15 +286,15 @@ function keydown(ev) {
         g_at[1] -= forwardNormalized[1] * movement_speed;
         g_at[2] -= forwardNormalized[2] * movement_speed;
     } else if (key == 65) { // A - Move left
-        g_eye[0] -= rightNormalized[0] * movement_speed;
-        g_eye[2] -= rightNormalized[2] * movement_speed;
-        g_at[0] -= rightNormalized[0] * movement_speed;
-        g_at[2] -= rightNormalized[2] * movement_speed;
-    } else if (key == 68) { // D - Move right
         g_eye[0] += rightNormalized[0] * movement_speed;
         g_eye[2] += rightNormalized[2] * movement_speed;
         g_at[0] += rightNormalized[0] * movement_speed;
         g_at[2] += rightNormalized[2] * movement_speed;
+    } else if (key == 68) { // D - Move right
+        g_eye[0] -= rightNormalized[0] * movement_speed;
+        g_eye[2] -= rightNormalized[2] * movement_speed;
+        g_at[0] -= rightNormalized[0] * movement_speed;
+        g_at[2] -= rightNormalized[2] * movement_speed;
     }
 
     // Redraw the scene
