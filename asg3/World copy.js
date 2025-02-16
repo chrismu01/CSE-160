@@ -164,7 +164,7 @@ let g_yaw = 0; // Horizontal rotation
 let g_pitch = 0; // Vertical rotation
 
 function addActions() {
-    // document.addEventListener("keydown", keydown);
+
     // Mouse handlers
     canvas.addEventListener('mousedown', function (ev) {
         g_mouseDown = true;
@@ -226,7 +226,7 @@ function initializePlayerPosition() {
                 // Apply the rotation to the forward vector
                 let rotatedForward = [
                     forward[0] * cosA - forward[2] * sinA, // X component
-                    forward[1],                           // Y component
+                    forward[1],                           // Y component (unchanged)
                     forward[0] * sinA + forward[2] * cosA  // Z component
                 ];
 
@@ -256,53 +256,42 @@ function isPositionValid(x, y) {
 
 function keydown(ev) {
     const key = ev.keyCode;
-    console.log(key);
-    
-    // Movement and Rotation Constants
+
+    // Calculate the forward and right vectors
     const forward = [g_at[0] - g_eye[0], g_at[1] - g_eye[1], g_at[2] - g_eye[2]];
-    const right = [forward[2], 0, -forward[0]]; // Perpendicular to forward vector
-    const forwardLength = Math.sqrt(forward[0] ** 2 + forward[1] ** 2 + forward[2] ** 2);
-    const rightLength = Math.sqrt(right[0] ** 2 + right[2] ** 2);
+    const right = [forward[2], 0, -forward[0]]; // Cross product of forward and up vectors
+
+    // Normalize the vectors
+    const forwardLength = Math.sqrt(forward[0] * forward[0] + forward[1] * forward[1] + forward[2] * forward[2]);
+    const rightLength = Math.sqrt(right[0] * right[0] + right[2] * right[2]);
     const forwardNormalized = [forward[0] / forwardLength, forward[1] / forwardLength, forward[2] / forwardLength];
     const rightNormalized = [right[0] / rightLength, 0, right[2] / rightLength];
 
+    // Calculate the next position
     let nextX = g_eye[0];
     let nextZ = g_eye[2];
 
-    if (key === 87) { // W - Move forward
+    if (key == 87) { // W - Move forward
         nextX += forwardNormalized[0] * movement_speed;
         nextZ += forwardNormalized[2] * movement_speed;
-    } else if (key === 83) { // S - Move backward
+    } else if (key == 83) { // S - Move backward
         nextX -= forwardNormalized[0] * movement_speed;
         nextZ -= forwardNormalized[2] * movement_speed;
-    } else if (key === 65) { // A - Move left
+    } else if (key == 65) { // A - Move left
         nextX += rightNormalized[0] * movement_speed;
         nextZ += rightNormalized[2] * movement_speed;
-    } else if (key === 68) { // D - Move right
+    } else if (key == 68) { // D - Move right
         nextX -= rightNormalized[0] * movement_speed;
         nextZ -= rightNormalized[2] * movement_speed;
-    } else if (key === 81) { // Q - Rotate left
-        const angle = rotation_speed;
-        const cosTheta = Math.cos(angle);
-        const sinTheta = Math.sin(angle);
-
-        const newForwardX = forward[0] * cosTheta + forward[2] * sinTheta;
-        const newForwardZ = -forward[0] * sinTheta + forward[2] * cosTheta;
-
-        g_at[0] = g_eye[0] + newForwardX;
-        g_at[2] = g_eye[2] + newForwardZ;
-    } else if (key === 69) { // E - Rotate right
-        const angle = -rotation_speed;
-        const cosTheta = Math.cos(angle);
-        const sinTheta = Math.sin(angle);
-
-        const newForwardX = forward[0] * cosTheta + forward[2] * sinTheta;
-        const newForwardZ = -forward[0] * sinTheta + forward[2] * cosTheta;
-
-        g_at[0] = g_eye[0] + newForwardX;
-        g_at[2] = g_eye[2] + newForwardZ;
+    } else if (key == 81) { // Q - Turn left
+        g_yaw -= rotation_speed; // Fix: Rotate left
+        updateCamera();
+    } else if (key == 69) { // E - Turn right
+        g_yaw += rotation_speed; // Fix: Rotate right
+        updateCamera();
     }
 
+    // Check if the next position is valid
     if (isPositionValid(nextX, nextZ)) {
         g_eye[0] = nextX;
         g_eye[2] = nextZ;
@@ -310,9 +299,9 @@ function keydown(ev) {
         g_at[2] = g_eye[2] + forwardNormalized[2];
     }
 
+    // Redraw the scene
     renderScene();
 }
-
 
 function initTextures() {
     // Load corn texture for walls
@@ -332,8 +321,8 @@ function sendTextureToTEXTURE0(image, textureUnit) {
         console.log('Failed to create the texture object');
         return false;
     }
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-    gl.activeTexture(gl.TEXTURE0 + textureUnit);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);  // Flip the image's y axis
+    gl.activeTexture(gl.TEXTURE0 + textureUnit); // Activate the appropriate texture unit
     gl.bindTexture(gl.TEXTURE_2D, texture);
 
     // Set the texture parameters
@@ -380,7 +369,7 @@ function updateAngles() {
 const movement_speed = 0.1;
 const rotation_speed = 0.05;
 var g_eye = [16, 1, 16]; // Starting position of the player
-var g_at = [16, 1, 15]; // Look-at point
+var g_at = [16, 1, 15]; // Look-at point (slightly in front of the player)
 var g_up = [0, 1, 0]; // Up vector
 
 var g_map = [
@@ -406,7 +395,7 @@ function drawMap() {
             if (height > 0) {
                 for (let h = 0; h < height; h++) {
                     let cube = new Cube();
-                    cube.textureNum = 0;
+                    cube.textureNum = 0; // Corn texture
                     cube.matrix.translate(x - (g_map.length / 2), h - 0.75, y - (g_map[x].length / 2));
                     cube.renderfaster();
                 }
