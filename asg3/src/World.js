@@ -257,10 +257,10 @@ function isPositionValid(x, y) {
 function keydown(ev) {
     const key = ev.keyCode;
     console.log(key);
-    
+
     // Movement and Rotation Constants
     const forward = [g_at[0] - g_eye[0], g_at[1] - g_eye[1], g_at[2] - g_eye[2]];
-    const right = [forward[2], 0, -forward[0]]; // Perpendicular to forward vector
+    const right = [forward[2], 0, -forward[0]];
     const forwardLength = Math.sqrt(forward[0] ** 2 + forward[1] ** 2 + forward[2] ** 2);
     const rightLength = Math.sqrt(right[0] ** 2 + right[2] ** 2);
     const forwardNormalized = [forward[0] / forwardLength, forward[1] / forwardLength, forward[2] / forwardLength];
@@ -291,6 +291,10 @@ function keydown(ev) {
 
         g_at[0] = g_eye[0] + newForwardX;
         g_at[2] = g_eye[2] + newForwardZ;
+
+        // Skip position validation for rotation
+        renderScene();
+        return;
     } else if (key === 69) { // E - Rotate right
         const angle = -rotation_speed;
         const cosTheta = Math.cos(angle);
@@ -301,7 +305,12 @@ function keydown(ev) {
 
         g_at[0] = g_eye[0] + newForwardX;
         g_at[2] = g_eye[2] + newForwardZ;
+
+        // Skip position validation for rotation
+        renderScene();
+        return;
     }
+
 
     if (isPositionValid(nextX, nextZ)) {
         g_eye[0] = nextX;
@@ -378,7 +387,7 @@ function updateAngles() {
 }
 
 const movement_speed = 0.1;
-const rotation_speed = 0.05;
+const rotation_speed = 0.1;
 var g_eye = [16, 1, 16]; // Starting position of the player
 var g_at = [16, 1, 15]; // Look-at point
 var g_up = [0, 1, 0]; // Up vector
