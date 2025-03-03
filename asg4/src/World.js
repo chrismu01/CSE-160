@@ -30,6 +30,7 @@ var FSHADER_SOURCE = `
     uniform vec3 u_lightPos;
     uniform vec3 u_cameraPos;
     varying vec4 v_VertPos;
+    uniform bool u_lightingEnabled;
     void main() {
         if (u_whichTexture == -3) {
             gl_FragColor = vec4((v_Normal+1.0)/2.0,1.0);
@@ -45,34 +46,35 @@ var FSHADER_SOURCE = `
             gl_FragColor = vec4(1, 0.2, 0.2, 1); // Error color
         }
         
-        vec3 lightVector = u_lightPos-vec3(v_VertPos);
-        float r=length(lightVector);
+            vec3 lightVector = u_lightPos-vec3(v_VertPos);
+            float r=length(lightVector);
 
-        vec3 L = normalize(lightVector);
-        vec3 N = normalize(v_Normal);
-        float nDotL = max(dot(N,L), 0.0);
+            vec3 L = normalize(lightVector);
+            vec3 N = normalize(v_Normal);
+            float nDotL = max(dot(N,L), 0.0);
 
-        //Reflection
-        vec3 R = reflect(-L,N);
+            //Reflection
+            vec3 R = reflect(-L,N);
 
-        // eye
-        vec3 E = normalize(u_cameraPos-vec3(v_VertPos));
+            // eye
+            vec3 E = normalize(u_cameraPos-vec3(v_VertPos));
 
-        // specular
-        float specular = pow(max(dot(E,R), 0.0),10.0);
+            // specular
+            float specular = pow(max(dot(E,R), 0.0),10.0);
 
-        vec3 diffuse = vec3(gl_FragColor) * nDotL;
-        vec3 ambient = vec3(gl_FragColor) * 0.3;
-        gl_FragColor = vec4(specular+diffuse+ambient, 1.0);
+            vec3 diffuse = vec3(gl_FragColor) * nDotL;
+            vec3 ambient = vec3(gl_FragColor) * 0.3;
+            gl_FragColor = vec4(specular+diffuse+ambient, 1.0);
 
 
-        // if (r<1.0) {
-        //     gl_FragColor= vec4(1,0,0,1);
-        // } else if (r<2.0){
-        //      gl_FragColor = vec4(0,1,0,1);
-        // }
+            // if (r<1.0) {
+            //     gl_FragColor= vec4(1,0,0,1);
+            // } else if (r<2.0){
+            //      gl_FragColor = vec4(0,1,0,1);
+            // }
 
-        // gl_FragColor = vec4(vec3(gl_FragColor)/(r*r),1);
+            // gl_FragColor = vec4(vec3(gl_FragColor)/(r*r),1);
+
     }`;
 
 // Global Variables
@@ -191,6 +193,11 @@ function connectVariablesToGLSL() {
         console.log('Failed to get the storage location of u_cameraPos');
         return;
     }
+    u_lightingEnabled = gl.getUniformLocation(gl.program, 'u_lightingEnabled');
+    if (!u_cameraPos) {
+        console.log('Failed to get the storage location of u_cameraPos');
+        return;
+    }
     // Set initial matrix values
     var identityM = new Matrix4();
     gl.uniformMatrix4fv(u_ModelMatrix, false, identityM.elements);
@@ -208,6 +215,7 @@ let g_magentaAngle = 0;
 let g_yellowAngle = 0;
 let g_yellowAnimation = false;
 let g_magentaAnimation = false;
+let g_lightingEnabled = true;
 
 
 function addActions() {
@@ -231,6 +239,9 @@ function addActions() {
     canvas.onmousemove = function(ev) {if(ev.buttons == 1) {click(ev)}};
 
     document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderScene(); });
+
+    document.getElementById('lightingOnButton').onclick = function () { g_lightingEnabled = true; renderScene(); };
+    document.getElementById('lightingOffButton').onclick = function () { g_lightingEnabled = false; renderScene(); };
 }
 
 
