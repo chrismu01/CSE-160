@@ -365,16 +365,6 @@ function renderScene() {
     backCube.matrix.translate(-0.5, 0, -1.5);
     backCube.render();
     
-    /*
-    // Draw the sky
-    var sky = new Cube();
-    // sky.textureNum = -2; // No texture, solid color
-    sky.color = [0.53, 0.81, 0.98, 1.0];
-    if (g_normalOn) sky.textureNum=-3;
-    sky.matrix.scale(-100, -100, -100);
-    sky.matrix.translate(-0.5, -0.5, -0.5);
-    sky.renderfaster();
-    */
     // Display performance
     var duration = performance.now() - startTime;
     sendTextToHTML(" ms: " + Math.floor(duration) + " fps: " + Math.floor(10000 / duration) / 10, "numdot");
