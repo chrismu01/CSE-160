@@ -340,7 +340,7 @@ function renderScene() {
     light.color= [1,1,0,1];
     light.textureNum = 1;
     light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2]);
-    light.matrix.scale(-.1,-.1,-.1);
+    light.matrix.scale(.1,.1,.1);
     light.matrix.translate(-.5,-.5,-.5);
     light.render();
 
