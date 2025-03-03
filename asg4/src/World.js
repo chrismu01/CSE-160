@@ -204,6 +204,10 @@ let g_globalAngle = 0;
 let g_normalOn = false;
 let g_lightAnimation = false;
 let g_lightPos = [0,0.3,-2];
+let g_magentaAngle = 0;
+let g_yellowAngle = 0;
+let g_yellowAnimation = false;
+let g_magentaAnimation = false;
 
 
 function addActions() {
@@ -212,12 +216,18 @@ function addActions() {
     document.getElementById('normalOff').onclick = function() {g_normalOn = false;};
     document.getElementById('lightOn').onclick = function() {g_lightAnimation = true;};
     document.getElementById('lightOff').onclick = function() {g_lightAnimation = false;};
+    document.getElementById('animationMagentaOnButton').onclick = function() {g_magentaAnimation = true;};
+    document.getElementById('animationMagentaOffButton').onclick = function() {g_magentaAnimation = false;};
+    document.getElementById('animationYellowOnButton').onclick = function() {g_yellowAnimation = true;};
+    document.getElementById('animationYellowOffButton').onclick = function() {g_yellowAnimation = false;};
 
     //Sliders
     document.getElementById('lightSlideX').addEventListener('mousemove', function(ev) { if(ev.buttons == 1) {g_lightPos[0] = this.value/100; renderScene()}});
     document.getElementById('lightSlideY').addEventListener('mousemove', function(ev) { if(ev.buttons == 1) {g_lightPos[1] = this.value/100; renderScene()}});
     document.getElementById('lightSlideZ').addEventListener('mousemove', function(ev) { if(ev.buttons == 1) {g_lightPos[2] = this.value/100; renderScene()}});
-    
+    document.getElementById('magentaSlide').addEventListener('mousemove', function(ev) { if(ev.buttons == 1) {g_magentaAngle = this.value; renderScene()}});
+    document.getElementById('yellowSlide').addEventListener('mousemove', function(ev) { if(ev.buttons == 1) {g_yellowAngle = this.value; renderScene()}});
+
     canvas.onmousemove = function(ev) {if(ev.buttons == 1) {click(ev)}};
 
     document.getElementById('angleSlide').addEventListener('mousemove', function() {g_globalAngle = this.value; renderScene(); });
@@ -280,7 +290,12 @@ function tick() {
 }
 
 function updateAnimationAngles() { 
-    
+    if (g_yellowAnimation) {
+        g_yellowAngle = (45*Math.sin(g_seconds));
+    }
+    if (g_magentaAnimation) {
+        g_magentaAngle = (45*Math.sin(g_seconds));
+    }
     if (g_lightAnimation) {
         g_lightPos[0]=Math.cos(g_seconds);
     }
