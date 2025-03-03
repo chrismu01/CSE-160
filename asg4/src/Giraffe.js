@@ -20,6 +20,7 @@ function drawGirrafe(transformMatrix) {
 function body(transformMatrix) {
     var body = new Cube();
     body.color = [1.0, 0.6, 0.2, 1.0];
+    if (g_normalOn) body.textureNum=-3;
     body.matrix = new Matrix4(transformMatrix);
     body.matrix.translate(-0.5, -0.45, 0.0);
     body.matrix.scale(0.9, 0.5, 0.4);
@@ -31,6 +32,7 @@ function frontLegs(transformMatrix) {
     // Front Right Leg with darker shade
     var leg1 = new Cube();
     leg1.color = [0.8, 0.4, 0.1, 1.0];
+    if (g_normalOn) leg1.textureNum=-3;
     leg1.matrix = new Matrix4(transformMatrix);
     leg1.matrix.translate(-0.4, -0.45, 0.3);
     // leg1.matrix.rotate(g_legAngle, 0, 0, 1);
@@ -41,6 +43,7 @@ function frontLegs(transformMatrix) {
     // Front Right Leg Toe
     var toe1 = new Cube();
     toe1.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) toe1.textureNum=-3;
     toe1.matrix = new Matrix4(fRightMat);
     toe1.matrix.translate(-0.0, -0.4, 0.0);
     toe1.matrix.scale(0.1, 0.05, 0.1);
@@ -49,6 +52,7 @@ function frontLegs(transformMatrix) {
     // Front LEFT Leg with darker shade
     var leg2 = new Cube();
     leg2.color = [0.8, 0.4, 0.1, 1.0];
+    if (g_normalOn) leg2.textureNum=-3;
     leg2.matrix = new Matrix4(transformMatrix);
     leg2.matrix.translate(-0.4, -0.45, 0.0);
     // leg2.matrix.rotate(-g_legAngle, 0, 0, 1);
@@ -59,6 +63,7 @@ function frontLegs(transformMatrix) {
     // Front LEFT Leg Toe
     var toe2 = new Cube();
     toe2.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) toe2.textureNum=-3;
     toe2.matrix = new Matrix4(fLeftMat);
     toe2.matrix.translate(0.0, -0.4, 0.0);
     toe2.matrix.scale(0.1, 0.05, 0.1);
@@ -70,6 +75,7 @@ function backLegs(transformMatrix) {
     // Back Right Leg with darker shade
     var leg3 = new Cube();
     leg3.color = [0.8, 0.4, 0.1, 1.0];
+    if (g_normalOn) leg3.textureNum=-3;
     leg3.matrix = new Matrix4(transformMatrix);
     leg3.matrix.translate(0.2, -0.45, 0.3);
     // leg3.matrix.rotate(g_legAngle, 0, 0, 1);
@@ -80,6 +86,7 @@ function backLegs(transformMatrix) {
     // Back Right Leg Toe
     var toe3 = new Cube();
     toe3.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) toe3.textureNum=-3;
     toe3.matrix = new Matrix4(bRightMat);
     toe3.matrix.translate(0.0, -0.4, 0.0);
     toe3.matrix.scale(0.1, 0.05, 0.1);
@@ -88,6 +95,7 @@ function backLegs(transformMatrix) {
     // Back Left Leg with darker shade
     var leg4 = new Cube();
     leg4.color = [0.8, 0.4, 0.1, 1.0];
+    if (g_normalOn) leg4.textureNum=-3;
     leg4.matrix = new Matrix4(transformMatrix);
     leg4.matrix.translate(0.2, -0.45, 0.0);
     // leg4.matrix.rotate(-g_legAngle, 0, 0, 1);
@@ -98,6 +106,7 @@ function backLegs(transformMatrix) {
     // Back Left Leg Toe
     var toe4 = new Cube();
     toe4.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) toe4.textureNum=-3;
     toe4.matrix = new Matrix4(bLeftMat);
     toe4.matrix.translate(0.0, -0.4, 0.0);
     toe4.matrix.scale(0.1, 0.05, 0.1);
@@ -108,6 +117,7 @@ function backLegs(transformMatrix) {
 function neck(transformMatrix) {
     var neck = new Cube();
     neck.color = [1.0, 0.7, 0.3, 1.0];
+    if (g_normalOn) neck.textureNum=-3;
     neck.matrix = new Matrix4(transformMatrix);
     neck.matrix.translate(-0.5, 0.05, 0.15);
     neck.matrix.scale(0.1, 0.5, 0.1);
@@ -125,6 +135,7 @@ function head(transformMatrix) {
     var head = new Cube();
     head.matrix = new Matrix4(ormatrix);
     head.color = [1.0, 0.7, 0.3, 1.0];
+    if (g_normalOn) head.textureNum=-3;
     head.matrix.translate(-0.0, 0.0, -0.175);
     head.matrix.scale(0.3, 0.1, 0.35);
     head.render();
@@ -132,6 +143,7 @@ function head(transformMatrix) {
     var head1 = new Cube();
     head1.matrix = new Matrix4(ormatrix);
     head1.color = [1.0, 0.7, 0.3, 1.0];
+    if (g_normalOn) head1.textureNum=-3;
     head1.matrix.translate(-0.0, 0.1, -0.175);
     head1.matrix.scale(0.2, 0.1, 0.35);
     head1.render();
@@ -140,6 +152,7 @@ function head(transformMatrix) {
     var eye1 = new Cube(); // Left eye
     eye1.matrix = new Matrix4(ormatrix);
     eye1.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) eye1.textureNum=-3;
     eye1.matrix.translate(0.2, 0.1, 0.08);
     eye1.matrix.scale(0.05, 0.05, 0.05);
     eye1.render();
@@ -147,6 +160,7 @@ function head(transformMatrix) {
     var eye2 = new Cube(); // Right eye
     eye2.matrix = new Matrix4(ormatrix);
     eye2.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) eye2.textureNum=-3;
     eye2.matrix.translate(0.2, 0.1, -0.13);
     eye2.matrix.scale(0.05, 0.05, 0.05);
     eye2.render();
@@ -155,6 +169,7 @@ function head(transformMatrix) {
     var mouth = new Cube();
     mouth.matrix = new Matrix4(ormatrix);
     mouth.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) mouth.textureNum=-3;
     mouth.matrix.translate(0.3, 0.03, -0.1);
     mouth.matrix.scale(0.01, 0.01, 0.2);
     mouth.render();
@@ -163,6 +178,7 @@ function head(transformMatrix) {
     var horn1 = new Cube();
     horn1.matrix = new Matrix4(ormatrix);
     horn1.color = [0.5, 0.35, 0.05, 1.0];
+    if (g_normalOn) horn1.textureNum=-3;
     horn1.matrix.translate(0.15, 0.2, 0.1);
     horn1.matrix.scale(0.02, 0.1, 0.02);
     horn1.render();
@@ -170,6 +186,7 @@ function head(transformMatrix) {
     var horn2 = new Cube();
     horn2.matrix = new Matrix4(ormatrix);
     horn2.color = [0.5, 0.35, 0.05, 1.0];
+    if (g_normalOn) horn2.textureNum=-3;
     horn2.matrix.translate(0.15, 0.2, -0.1);
     horn2.matrix.scale(0.02, 0.1, 0.02);
     horn2.render();
@@ -180,6 +197,7 @@ function tail(transformMatrix) {
     // First tail segment
     var tail1 = new Cube();
     tail1.color = [1.0, 0.75, 0.45, 1.0];
+    if (g_normalOn) tail1.textureNum=-3;
     tail1.matrix = new Matrix4(transformMatrix);
     tail1.matrix.translate(0.4, -0.08, 0.18);
     // tail1.matrix.rotate(-g_tailAngle1, 0, 0, 1);
@@ -190,6 +208,7 @@ function tail(transformMatrix) {
     // Second tail segment
     var tail2 = new Cube();
     tail2.color = [1.0, 0.75, 0.45, 1.0];
+    if (g_normalOn) tail2.textureNum=-3;
     tail2.matrix = new Matrix4(tail1Mat);
     tail2.matrix.translate(0.15, 0.0, 0.0);
     // tail2.matrix.rotate(-g_tailAngle2, 0, 0, 1);
@@ -200,6 +219,7 @@ function tail(transformMatrix) {
     // Tail end
     var tailEnd = new Cube();
     tailEnd.color = [1.0, 0.75, 0.45, 1.0];
+    if (g_normalOn) tailEnd.textureNum=-3;
     tailEnd.matrix = new Matrix4(tail2Mat);
     tailEnd.matrix.translate(0.15, -0.04, 0.0);
     tailEnd.matrix.scale(0.1, 0.1, 0.1);
@@ -211,6 +231,7 @@ function spots(transformMatrix) {
     // Left Spots
     var spot1 = new Cube();
     spot1.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) spot1.textureNum=-3;
     spot1.matrix = new Matrix4(transformMatrix);
     spot1.matrix.translate(0.13, -0.27, -0.001);
     spot1.matrix.rotate(62, 0, 0, 1);
@@ -219,11 +240,11 @@ function spots(transformMatrix) {
 
     var spot2 = new Cube();
     spot2.color = [0.0, 0.0, 0.0, 1.0];
+    if (g_normalOn) spot2.textureNum=-3;
     spot2.matrix = new Matrix4(transformMatrix);
     spot2.matrix.translate(-0.29, -0.14, -0.001);
     spot2.matrix.rotate(30, 0, 0, 1);
     spot2.matrix.scale(0.08, 0.12, 0.001);
     spot2.render();
 
-    // Add more spots as needed...
 }
