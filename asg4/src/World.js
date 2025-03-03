@@ -349,13 +349,13 @@ function renderScene() {
     if (g_normalOn) sp.textureNum=-3;
     sp.matrix.translate(-1.5,-1.5,-6);
     sp.render();
-    /*
+    
     // Draw the giraffe
     var giraffeMat = new Matrix4();
     giraffeMat.translate(1.5, -1.5, -6);
     giraffeMat.scale(1, 1, 1);
     drawGirrafe(giraffeMat);
-    */
+    
     // Draw the floor
     var floor = new Cube();
     floor.color = [1.0,0.0,0.0,1.0];
